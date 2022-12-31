@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#6AB8B8"
-    tools:context=".AddFragment">
+    tools:context=".UI.View.AddFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="300dp"
@@ -30,7 +30,7 @@
             android:layout_marginEnd="255dp"
             android:layout_marginBottom="5dp"
             android:text="할 일"
-            app:layout_constraintBottom_toTopOf="@+id/editTextToDO"
+            app:layout_constraintBottom_toTopOf="@+id/textContent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -44,13 +44,13 @@
             android:layout_marginEnd="258dp"
             android:layout_marginBottom="5dp"
             android:text="기한"
-            app:layout_constraintBottom_toTopOf="@+id/editTextDueDate"
+            app:layout_constraintBottom_toTopOf="@+id/textDeadline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextToDO" />
+            app:layout_constraintTop_toBottomOf="@+id/textContent" />
 
         <EditText
-            android:id="@+id/editTextToDO"
+            android:id="@+id/textContent"
             android:layout_width="231dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -65,7 +65,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <EditText
-            android:id="@+id/editTextDueDate"
+            android:id="@+id/textDeadline"
             android:layout_width="231dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
