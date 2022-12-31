@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,16 +12,16 @@
         android:id="@+id/textToDo"
         android:layout_width="153dp"
         android:layout_height="53dp"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="27dp"
-        android:layout_marginEnd="3dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="27dp"
         android:gravity="center|center_horizontal"
         android:text="해야 할 일"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textDueDate"
-        app:layout_constraintStart_toEndOf="@+id/checkBox2"
+        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -28,28 +29,29 @@
         android:id="@+id/textDueDate"
         android:layout_width="153dp"
         android:layout_height="53dp"
-        android:layout_marginStart="3dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="27dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="27dp"
         android:gravity="center|center_horizontal"
         android:text="기간"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textToDo"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:gravity="center|center_horizontal"
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="44dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="33dp"
+        android:background="@drawable/trashcan"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textToDo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.493" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textDueDate"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
