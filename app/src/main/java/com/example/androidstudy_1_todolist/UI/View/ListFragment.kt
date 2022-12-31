@@ -50,7 +50,7 @@ class ListFragment : Fragment() {
 
         /** putForm(id) 테스트 하기 */
         //val testForm = Form("이현승 다녀감", "20000417")
-        //repo.putForm(2, testForm)
+        //repo.putForm(3, testForm)
 
         /** View모델의 목록을 출력하는 getList()함수 호출 */
         var viewmodel = ListModel()
