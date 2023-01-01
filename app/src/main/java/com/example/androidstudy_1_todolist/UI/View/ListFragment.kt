@@ -1,17 +1,22 @@
 package com.example.androidstudy_1_todolist.UI.View
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.androidstudy_1_todolist.Data.DTO.Form
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidstudy_1_todolist.Data.DTO.Todos
 import com.example.androidstudy_1_todolist.Data.Repository
 import com.example.androidstudy_1_todolist.Event
+import com.example.androidstudy_1_todolist.MainActivity
 import com.example.androidstudy_1_todolist.R
 import com.example.androidstudy_1_todolist.UI.ViewModel.ListModel
 import com.example.androidstudy_1_todolist.databinding.ListFragmentBinding
@@ -21,6 +26,7 @@ import kotlinx.android.synthetic.main.list_fragment.*
 class ListFragment : Fragment() {
     private lateinit var binding:ListFragmentBinding    // ViewBinding
     private lateinit var adapter: Adapter               // Adapter
+
 
     private var _form = MutableLiveData<Event<Boolean>>()
     val form: LiveData<Event<Boolean>> = _form
@@ -35,25 +41,34 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = ListFragmentBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         /** 어뎁터를 RecyclerView에 등록 */
-        var adapter = Adapter()
+        val adapter = Adapter()
+        var viewmodel = ListModel()
+
         binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        val repo = Repository()
-
-        /** deleteForm(id) 테스트 하기 */
-        //repo.deleteForm(2)
+        /** 삭제 버튼에 대한 이벤트 처리 */
+        adapter.setOnItemclickListner(object: Adapter.OnItemClickListner{
+            override fun onItemClick(todo: Todos) {
+                viewmodel.deleteList(todo)
+            }
+        })
+        /** viewmodel의 옵저버 */
+        viewmodel.delete.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(getActivity(), "삭제 완료!", Toast.LENGTH_SHORT).show()
+        })
 
         /** putForm(id) 테스트 하기 */
         //val testForm = Form("이현승 다녀감", "20000417")
         //repo.putForm(3, testForm)
 
         /** View모델의 목록을 출력하는 getList()함수 호출 */
-        var viewmodel = ListModel()
         viewmodel.getList()
 
         /** 추가하기 버튼을 이용하여 이동 */
@@ -69,18 +84,5 @@ class ListFragment : Fragment() {
             adapter.setList(it.peekContent().todos)
             adapter.notifyItemRangeChanged(0,it.peekContent().total_post)
         })
-    }
-
-    /** RecyclerView 확인용 데이터 입력 */
-    val mDatas = mutableListOf<Todos>()
-    private fun initRecycler() {
-        adapter = Adapter()
-        recyclerView.adapter = adapter
-
-        mDatas.apply{
-            add(Todos(_id="123", id=1, content="play", deadline="10"))
-            adapter.datalist = mDatas
-            adapter.notifyDataSetChanged()
-        }
     }
 }
