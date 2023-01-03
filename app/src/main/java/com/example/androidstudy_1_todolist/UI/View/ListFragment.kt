@@ -1,35 +1,33 @@
 package com.example.androidstudy_1_todolist.UI.View
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidstudy_1_todolist.Data.DTO.Todos
-import com.example.androidstudy_1_todolist.Data.Repository
 import com.example.androidstudy_1_todolist.Event
-import com.example.androidstudy_1_todolist.MainActivity
+import com.example.androidstudy_1_todolist.ModifyFragment
 import com.example.androidstudy_1_todolist.R
 import com.example.androidstudy_1_todolist.UI.ViewModel.ListModel
 import com.example.androidstudy_1_todolist.databinding.ListFragmentBinding
-import kotlinx.android.synthetic.main.item_recycler.*
-import kotlinx.android.synthetic.main.list_fragment.*
 
 class ListFragment : Fragment() {
     private lateinit var binding:ListFragmentBinding    // ViewBinding
     private lateinit var adapter: Adapter               // Adapter
 
-
     private var _form = MutableLiveData<Event<Boolean>>()
     val form: LiveData<Event<Boolean>> = _form
+
+    var viewmodel = ListModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,28 +46,43 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         /** 어뎁터를 RecyclerView에 등록 */
         val adapter = Adapter()
-        var viewmodel = ListModel()
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        var position = -1
 
         /** 삭제 버튼에 대한 이벤트 처리 */
         adapter.setOnItemclickListner(object: Adapter.OnItemClickListner{
-            override fun onItemClick(todo: Todos) {
+            override fun onItemDeleteClick(pos: Int, todo: Todos) {
                 viewmodel.deleteList(todo)
+                position = pos
+            }
+
+            override fun onItemClick(pos: Int, todo:Todos) {
+                val id = pos.toString()
+                val content = todo.content
+                val deadline = todo.deadline
+
+                /** *각각의 키값에 매핑해서 데이터를 전달한다 */
+                setFragmentResult("requestKey", bundleOf(
+                    "id" to id,
+                    "content" to content,
+                    "deadline" to deadline))
+
+                parentFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.layout, ModifyFragment())
+                    .commit()
+                Log.i("test_click", "$pos 클릭완료!")
             }
         })
+
         /** viewmodel의 옵저버 */
         viewmodel.delete.observe(viewLifecycleOwner, Observer {
+            // 삭제 완료 메시지를 출력하고 리스트를 다시 업데이트
             Toast.makeText(getActivity(), "삭제 완료!", Toast.LENGTH_SHORT).show()
+            adapter.notifyItemRemoved(position)
         })
-
-        /** putForm(id) 테스트 하기 */
-        //val testForm = Form("이현승 다녀감", "20000417")
-        //repo.putForm(3, testForm)
-
-        /** View모델의 목록을 출력하는 getList()함수 호출 */
-        viewmodel.getList()
 
         /** 추가하기 버튼을 이용하여 이동 */
         binding.btnAdd.setOnClickListener {
@@ -79,10 +92,27 @@ class ListFragment : Fragment() {
                 .commit()
         }
 
-        /** 관찰하고 있는 ViewModel의 Observer */
+        /** View모델의 목록을 출력하는 getList()함수 호출 */
+        viewmodel.getList()
+        /** 옵저버 */
         viewmodel.setList.observe(viewLifecycleOwner, Observer {
             adapter.setList(it.peekContent().todos)
             adapter.notifyItemRangeChanged(0,it.peekContent().total_post)
         })
+
+        // observeViewModel()
     }
+
+    /*fun observeViewModel() {
+        val adapter = Adapter()
+
+        viewmodel.delete.observe(viewLifecycleOwner, Observer {
+            Log.i("check", "delete_Complete")
+        })
+
+        viewmodel.setList.observe(viewLifecycleOwner, Observer {
+            adapter.setList(it.peekContent().todos)
+            adapter.notifyItemRangeChanged(0,it.peekContent().total_post)
+        })
+    }*/
 }

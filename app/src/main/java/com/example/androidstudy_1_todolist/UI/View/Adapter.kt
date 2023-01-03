@@ -1,16 +1,11 @@
 package com.example.androidstudy_1_todolist.UI.View
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidstudy_1_todolist.Data.DTO.Todos
-import com.example.androidstudy_1_todolist.MainActivity
 import com.example.androidstudy_1_todolist.UI.ViewModel.ListModel
 import com.example.androidstudy_1_todolist.databinding.ItemRecyclerBinding
-import com.example.androidstudy_1_todolist.databinding.ListFragmentBinding
-import com.google.android.material.internal.ContextUtils.getActivity
 
 class Adapter : RecyclerView.Adapter<Adapter.MyViewHolder>() {
 
@@ -22,7 +17,10 @@ class Adapter : RecyclerView.Adapter<Adapter.MyViewHolder>() {
 
     /** 커스텀 리스너 인터페이스 정의 */
     interface OnItemClickListner{
-        fun onItemClick(todo: Todos)
+        // 삭제 아이콘 클릭시 이벤트 처리
+        fun onItemDeleteClick(pos: Int, todo: Todos)
+        // 아이템리스트 클릭시 이벤트 처리
+        fun onItemClick(pos:Int, todo: Todos)
     }
 
     /** 리스너 인터페이스 객체를 전달하는 메서드 선언 */
@@ -39,9 +37,16 @@ class Adapter : RecyclerView.Adapter<Adapter.MyViewHolder>() {
 
         /** 클릭 이벤트 핸들러 메소드에 커스텀 리스너 메소드 호출 */
         init {
+            /** Delete버튼에 대한 이벤트 처리 */
             binding.btnDelete.setOnClickListener {
                 val pos = bindingAdapterPosition
-                itemClickListner.onItemClick(datalist[pos])
+                itemClickListner.onItemDeleteClick(pos, datalist[pos])
+            }
+
+            /** 아이템 리스트 자체를 누르는 경우에 대한 이벤트 처리 */
+            binding.item.setOnClickListener{
+                val pos = bindingAdapterPosition
+                itemClickListner.onItemClick(datalist[pos].id, datalist[pos])
             }
         }
 
