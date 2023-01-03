@@ -23,11 +23,13 @@ class ModifyFragment : Fragment() {
         binding = FragmentModifyBinding.inflate(inflater, container, false)
         return binding.root
     }
+    private lateinit var itemId: String
+    //private lateinit var tset: Int
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var itemId:String
+        //var itemId: String
 
         /** ListFragment에서 pos값과 해당하는 todo값을 전달받았다. */
         setFragmentResultListener("requestKey") { key, bundle ->
@@ -57,9 +59,8 @@ class ModifyFragment : Fragment() {
             }
             else{
                 viewmodel.putList(
-                    // 선언 에러 나는 이유,,?
                     // 일단 임시 아이디 값 지정
-                    1,
+                    itemId.toInt(),
                     binding.textContent.text.toString(),
                     binding.textDeadline.text.toString())
             }
