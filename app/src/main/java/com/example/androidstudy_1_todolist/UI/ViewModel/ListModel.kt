@@ -22,6 +22,9 @@ class ListModel:androidx.lifecycle.ViewModel() {
     private var _delete = MutableLiveData<Event<Boolean>>()
     val delete: LiveData<Event<Boolean>> = _delete
 
+    private var _put = MutableLiveData<Event<Boolean>>()
+    val put: LiveData<Event<Boolean>> = _put
+
     /** callback 데이터를 UI에 할당 */
     fun getList(){
         repo.getList(object : Repository.GetDataCallback<ToDoList> {
@@ -40,6 +43,19 @@ class ListModel:androidx.lifecycle.ViewModel() {
     /** 데이터를 삭제 */
     fun deleteList(todos: Todos) {
         repo.deleteForm(todos.id)
+        //repo.getList()
         _delete.postValue(Event(true))
+    }
+
+    // 수정하기 위해서는 id값과 form을 받아야 한다.
+    // form을 받지 못하더라도 todos 를 받아서 추출해서 써야 한다.
+    /** 데이터를 수정 */
+    fun putList(id: Int, content: String, deadline: String) {
+        var form = Form(
+            content = content,
+            deadline = deadline
+        )
+        repo.putForm(id, form)
+        _put.postValue(Event(true))
     }
 }
