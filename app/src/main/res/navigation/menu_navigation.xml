@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_navigation"
+    app:startDestination="@id/navigation_todolist">
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.androidstudy_1_todolist.UI.View.TakePictureFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/take_picture_fragment"/>
+    <fragment
+        android:id="@+id/navigation_todolist"
+        android:name="com.example.androidstudy_1_todolist.UI.View.navigation.ListFragment"
+        android:label="ListFragment"
+        tools:layout="@layout/list_fragment">
+        <action
+            android:id="@+id/action_navigation_todolist_to_addFragment"
+            app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_navigation_todolist_to_modifyFragment"
+            app:destination="@id/modifyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_snowman"
+        android:name="com.example.androidstudy_1_todolist.UI.View.navigation.SnowmanFragment"
+        android:label="SnowmanFragment"
+        tools:layout="@layout/snowman_fragment"/>
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.androidstudy_1_todolist.UI.View.AddFragment"
+        android:label="add_fragment"
+        tools:layout="@layout/add_fragment" >
+        <action
+            android:id="@+id/action_addFragment_to_navigation_todolist"
+            app:destination="@id/navigation_todolist" />
+    </fragment>
+    <fragment
+        android:id="@+id/modifyFragment"
+        android:name="com.example.androidstudy_1_todolist.UI.View.ModifyFragment"
+        android:label="modify_fragment"
+        tools:layout="@layout/modify_fragment" >
+        <action
+            android:id="@+id/action_modifyFragment_to_navigation_todolist"
+            app:destination="@id/navigation_todolist" />
+    </fragment>
+</navigation>

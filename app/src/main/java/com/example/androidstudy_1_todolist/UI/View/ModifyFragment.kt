@@ -1,4 +1,4 @@
-package com.example.androidstudy_1_todolist
+package com.example.androidstudy_1_todolist.UI.View
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,28 +8,28 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
-import com.example.androidstudy_1_todolist.UI.View.ListFragment
+import com.example.androidstudy_1_todolist.R
+import com.example.androidstudy_1_todolist.UI.View.navigation.ListFragment
 import com.example.androidstudy_1_todolist.UI.ViewModel.ListModel
-import com.example.androidstudy_1_todolist.databinding.FragmentModifyBinding
+import com.example.androidstudy_1_todolist.databinding.ModifyFragmentBinding
 
 class ModifyFragment : Fragment() {
-    private lateinit var binding: FragmentModifyBinding
+    private lateinit var binding: ModifyFragmentBinding
     var viewmodel = ListModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentModifyBinding.inflate(inflater, container, false)
+        binding = ModifyFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    // 전달받은 id값을 저장
     private lateinit var itemId: String
-    //private lateinit var tset: Int
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //var itemId: String
 
         /** ListFragment에서 pos값과 해당하는 todo값을 전달받았다. */
         setFragmentResultListener("requestKey") { key, bundle ->
