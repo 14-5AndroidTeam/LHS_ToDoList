@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_todolist"
+        android:icon="@drawable/todolist"
+        android:title="ToDo 리스트" />
+
+    <item
+        android:id="@+id/navigation_snowman"
+        android:icon="@drawable/ic_snowman"
+        android:title="내가 만든 눈사람" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/user"
+        android:title="프로필" />
+</menu>
