@@ -3,43 +3,56 @@ package com.example.androidstudy_1_todolist.Data
 import android.util.Log
 import com.example.androidstudy_1_todolist.Data.DTO.Form
 import com.example.androidstudy_1_todolist.Data.DTO.ToDoList
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.*
 
 class Repository {
     private var service = RetrofitManager.retrofit.create(
         RetrofitService::class.java)
 
-    /** get 통신 */
     fun getList(param: GetDataCallback<ToDoList>) {
-        /**비동기 통신: enqueue*/
-            service.getList().enqueue(object : Callback<ToDoList>{
-            override fun onResponse(call: Call<ToDoList>, response: Response<ToDoList>) {
-                /**응답 성공*/
-                Log.i("response", response.body().toString()) //데이터 확인
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = service.getList()
 
-                /**Viewmodel의 인터페이스 구현부에 데이터 넘겨주기*/
+            if (response.isSuccessful) {
                 param.onSuccess(response.body())
             }
-
-            override fun onFailure(call: Call<ToDoList>, t: Throwable) {
-                /**응답 실패*/
-                param.onFailure(t)
+            else {
+                param.onFailure(Throwable())
             }
-        })
+        }
     }
 
-    /** post 통신*/
+    /** Retrofit2를 이용한 post 통신
     fun postForm(form: Form) {
         service.postForm(form).enqueue(object : Callback<String>{
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 /**응답 성공*/
-                Log.i("post_Success", response.body().toString()) //데이터 확인
+                Log.i("post_Success", response.body().toString())
             }
             override fun onFailure(call: Call<String>, t: Throwable) {
                 /**요청 실패*/
-                Log.i("post_Failure", t.toString()) //데이터 확인
+                Log.i("post_Failure", t.toString())
             }
         })
+    }
+    */
+
+    /** Coroutine을 이용한 post 통신 */
+    fun postForm(form: Form) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = service.postForm(form)
+
+            if (response.isSuccessful) {
+                Log.d("Coroutine", "Coroutine Success")
+            }
+            else {
+                Log.e("Coroutine", "onResponse, status :" +
+                        "${response.code()}, message : ${response.message()}")
+            }
+        }
     }
 
     /** put 통신 */
